@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS emp_manage;
+CREATE DATABASE emp_manage;
+USE emp_manage;
+
 DROP TABLE IF EXISTS departments;
 
 DROP TABLE IF EXISTS roles;
@@ -22,7 +26,7 @@ CREATE TABLE employees (
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INTEGER UNSIGNED NOT NULL,
-    CONSTRAINT fk_role_id FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE SET NUll,
-    manager_id INTEGER UNSIGNED NOT NULL,
-    CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee (id) ON DELETE SET NUll
+    CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE,
+    manager_id INTEGER UNSIGNED,
+    CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employees (id) ON DELETE SET NUll
 );
