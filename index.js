@@ -257,3 +257,49 @@ function addEmployee() {
             })
         });
 };
+
+
+// update employee role
+function updateEmployeeRole() {
+    db.getAllEmployees ()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${last_name}, ${first}`,
+                value: id
+        }));
+
+        prompt([
+            {
+                type: 'list',
+                name: 'employeeId',
+                message: 'Please select an employee to update:',
+                choices: employeeChoices
+            }
+        ])
+        .then(res => {
+            let employeeId = res.employeeId;
+            db.getAllRoles ()
+            .then(([rows]) => {
+                let roles = rows;
+                const roleChoices = roles.map(({ id, title }) => ({
+                    name: title,
+                    value: id
+                }));
+
+                prompt([
+                    {
+                        type: 'list',
+                        name: 'roleId',
+                        message: 'Please select a role to assign to employee!',
+                        choices: roleChoices
+                    }
+                ])
+                .then(res => db.updateEmployeeRole(employeeId, res.roleId))
+                .then(() => consle.log('Employee has been assigned to new role!'))
+                .then(() => mainMenu()
+                );
+            })
+        });
+    });
+};
