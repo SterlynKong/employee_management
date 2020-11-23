@@ -61,7 +61,7 @@ function mainMenu() {
         switch (action) {
             case 'VIEW_DEPARTMENTS':
                 viewDepartments();
-                break;:
+                break;
             case 'VIEW_ROLES':
                 viewRoles();
                 break;
@@ -93,37 +93,167 @@ function mainMenu() {
 // view departments
 function viewDepartments() {
     db.getAllDepartments()
-    .then(([rows]) => {
-        let departments = rows;
-        console.log('\n');
-        console.table(departments);
-    })
-    .then(() => mainMenu()
-    );
+        .then(([rows]) => {
+            let departments = rows;
+            console.log('\n');
+            console.table(departments);
+        })
+        .then(() => mainMenu()
+        );
 };
 
 
 // view roles
 function viewRoles() {
     db.getAllRoles()
-    .then(([rows]) => {
-        let roles = rows;
-        console.log('\n');
-        console.table(roles);
-    })
-    .then(() => mainMenu()
-    );
+        .then(([rows]) => {
+            let roles = rows;
+            console.log('\n');
+            console.table(roles);
+        })
+        .then(() => mainMenu()
+        );
 };
 
 
 // view employees
 function viewEmployees() {
     db.getAllEmployees()
-    .then(([rows]) => {
-        let employees = rows;
-        console.log('\n');
-        console.table(employees);
-    })
-    .then(() => mainMenu()
-    );
+        .then(([rows]) => {
+            let employees = rows;
+            console.log('\n');
+            console.table(employees);
+        })
+        .then(() => mainMenu()
+        );
+};
+
+
+// add a department
+function addDepartment() {
+    prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Please enter the department name:'
+        }
+    ])
+        .then(res => {
+            let name = res.name;
+            db.addDepartment(name)
+                .then(() => console.log(`Department ${name} has been added!`))
+                .then(() => mainMenu()
+                );
+        });
+};
+
+
+// add role
+function addRole() {
+    db.getAllDepartments()
+        .then(([rows]) => {
+            let departments = rows;
+            const departmentChoices = departments.map(({ id, name }) => ({
+                name: name,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: 'input',
+                    name: 'title',
+                    message: 'Please enter the role name:'
+                },
+                {
+                    type: 'input',
+                    salary: 'salary',
+                    message: 'Please enter the role salary:'
+                },
+                {
+                    type: 'list',
+                    department: 'department_id',
+                    message: 'Please select the department where this role should be added:',
+                    choices: departmentChoices
+                }
+            ])
+                .then(role => {
+                    db.addRole(role)
+                        .then(() => console.log(`${role.title} has been added!`))
+                        .then(() => mainMenu()
+                        );
+                })
+        })
+};
+
+
+// add an employee
+function addEmployee() {
+    db.getAllRoles()
+        .then(([rows]) => {
+            let roles = rows;
+            const roleChoices = roles.map(({ id, title }) => ({
+                name: title,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: 'input',
+                    name: 'first_name',
+                    message: "Please enter the employee's first name:"
+                },
+                {
+                    type: 'input',
+                    name: 'last_name',
+                    message: "Please enter the employee's last name:"
+                },
+                {
+                    type: 'list',
+                    name: 'roleId',
+                    message: "What is this employee's role?",
+                    choices: roleChoices
+                }
+
+            ])
+            .then(res => {
+                let first_name = res.first_name;
+                let last_name = res.last_name;
+
+                db.getAllEmployees()
+                    .then(([rows]) => {
+                    let employees = rows;
+                    const managerChoices = employees.map(({ id, first_name, last_name }) => ({
+                        name: `${last_name}, ${first_name}`,
+                        value: id
+                    }));
+
+                    managerChoices.splice(0,0,{name: 'None', value: 'null'});
+
+                    prompt([
+                        {
+                            type: 'list',
+                            name: 'managerId',
+                            message: "Please select the employee's manager:",
+                            choices: managerChoices
+                        }
+                    ])
+                    .then(res => {
+                        let employee = {
+                            managerId: res.managerId,
+                            role_id: res.roleId,
+                            first_name: res.firstName,
+                            last_name: res.lastName
+                        };
+
+                        db.addEmployee(employee);
+                    })
+                    .then(() => console.log(
+                        `${last_name}, ${first_name} has been added successfully`
+                    ))
+                    .then(() => mainMenu()
+                    );
+
+                })
+            })
+        });
 };
