@@ -303,3 +303,10 @@ function updateEmployeeRole() {
         });
     });
 };
+
+
+// quit
+function quit() {
+    consle.log("See you next time!");
+    process.exit();
+};

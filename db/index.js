@@ -2,24 +2,27 @@
 const connection = require('./connect');
 
 class DB {
+    constructor() {
+        this.connection = connection;
+    }
     // get all departments
     getAllDepartments() {
         return this.connection.promise().query(
-            'SELECT department.id, department.name FROM departments'
+            'SELECT departments.id, departments.name FROM departments'
         );
     };
 
     // get all roles
     getAllRoles() {
         return this.connection.promise().query(
-            'SELECT roles.id, roles.title, departments.name AS department FROM roles LEFT JOIN department ON roles.department_id = department.id;'
+            'SELECT roles.id, roles.title, departments.name AS department FROM roles LEFT JOIN departments ON roles.department_id = departments.id;'
         );
     };
 
     // get all employees
     getAllEmployees() {
         return this.connection.promise().query(
-            'SELECT employee.id, employee.first_name, employee.last_name, role.title AS job_title, departments.name AS department, roles.salary, CONCAT(manager.last_name, ',', manager.first_name) AS manager FROM employees LEFT JOIN roles on employee.role_id = role.id LEFT JOIN departments on role.department_id = department.id'
+            'SELECT employees.id, employees.first_name, employees.last_name, roles.title AS job_title, departments.name AS department, roles.salary, CONCAT(manager.last_name, ',', manager.first_name) AS manager FROM employees LEFT JOIN roles on employees.role_id = role.id LEFT JOIN departments on role.department_id = departments.id'
         );
     };
 

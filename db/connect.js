@@ -7,13 +7,14 @@ const connection = mysql.createConnection({
 
     user: 'root',
     password: 'sqladmin',
-    database: 'emp_manage'
+    database: 'emp_manage',
+    socketPath: '/tmp/mysql.sock'
 });
 
 
 connection.connect(err => {
     if (err) throw err;
-    consle.log('Connected to emp_manage as id ' + connection.threadId);
+    console.log('Connected to emp_manage as id ' + connection.threadId);
 });
 
 module.exports = connection;
