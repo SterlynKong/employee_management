@@ -8,19 +8,19 @@ require('console.table');
 startApp();
 
 // app start
-function startApp () {
+function startApp() {
     console.log('Welcome to employee management');
     mainMenu();
 };
 
-function mainMenu () {
+function mainMenu() {
     prompt([
         {
             type: 'list',
             name: 'action',
             message: "What do you want to do?",
             choices: [
-                { 
+                {
                     name: 'View All Departments',
                     value: 'VIEW_DEPARTMENTS'
                 },
@@ -53,14 +53,14 @@ function mainMenu () {
                     value: 'QUIT'
                 }
             ]
-        }        
+        }
     ]).then(res => {
         let action = res.action;
 
         // take next action based on initial choice
         switch (action) {
             case 'VIEW_DEPARTMENTS':
-                viewDePARTMENTS();
+                viewDepartments();
                 break;:
             case 'VIEW_ROLES':
                 viewRoles();
@@ -80,8 +80,50 @@ function mainMenu () {
             case 'UPDATE_EMPLOYEE_ROLE':
                 updateEmployeeRole();
                 break;
+            case 'QUIT':
+                quit();
+                break;
             default:
-                'QUIT';
+                'QUIT'
         }
+    });
+};
+
+
+// view departments
+function viewDepartments() {
+    db.getAllDepartments()
+    .then(([rows]) => {
+        let departments = rows;
+        console.log('\n');
+        console.table(departments);
     })
+    .then(() => mainMenu()
+    );
+};
+
+
+// view roles
+function viewRoles() {
+    db.getAllRoles()
+    .then(([rows]) => {
+        let roles = rows;
+        console.log('\n');
+        console.table(roles);
+    })
+    .then(() => mainMenu()
+    );
+};
+
+
+// view employees
+function viewEmployees() {
+    db.getAllEmployees()
+    .then(([rows]) => {
+        let employees = rows;
+        console.log('\n');
+        console.table(employees);
+    })
+    .then(() => mainMenu()
+    );
 };
