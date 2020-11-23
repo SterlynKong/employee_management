@@ -1,7 +1,6 @@
 const { prompt } = require('inquirer');
 // require database
 const db = require('./db');
-const { connection } = require('./db')
 
 // require console table
 require('console.table');
@@ -47,7 +46,7 @@ function mainMenu () {
                 },
                 {
                     name: 'Update Employee Role',
-                    value: 'UPDATE_EMPLOYEE'
+                    value: 'UPDATE_EMPLOYEE_ROLE'
                 },
                 {
                     name: 'Quit',
@@ -78,8 +77,8 @@ function mainMenu () {
             case 'ADD_EMPLOYEE':
                 addEmployee();
                 break;
-            case 'UPDATE_EMPLOYEE':
-                updateEmployee();
+            case 'UPDATE_EMPLOYEE_ROLE':
+                updateEmployeeRole();
                 break;
             default:
                 'QUIT';
