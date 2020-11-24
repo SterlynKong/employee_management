@@ -70,7 +70,7 @@
   ## Image:
   ![employee_managemnet demo GIF](/demo/employee_management.gif "Employee Management App Demo (GIF)")
   ![employee_managemnet demo MP4](/demo/employee_management.mp4 "Employee Management App Demo (MP4)")
-  ![employee_managemnet demo webm](/demo/employee_management.gif "Employee Management App Demo (webm)")
+  ![employee_managemnet demo webm](/demo/employee_management.webm "Employee Management App Demo (webm)")
 
 
   ## Contributing:
