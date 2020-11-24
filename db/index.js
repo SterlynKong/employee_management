@@ -22,7 +22,7 @@ class DB {
     // get all employees
     getAllEmployees() {
         return this.connection.promise().query(
-            'SELECT employees.id, employees.first_name, employees.last_name, roles.title AS job_title, departments.name AS department, roles.salary, CONCAT(manager.last_name, ',', manager.first_name) AS manager FROM employees LEFT JOIN roles on employees.role_id = role.id LEFT JOIN departments on role.department_id = departments.id'
+            'SELECT employees.id, employees.first_name, employees.last_name, roles.title AS job_title, departments.name AS department, roles.salary, CONCAT(manager.last_name, manager.first_name) AS manager FROM employees LEFT JOIN roles on employees.role_id = roles.id LEFT JOIN departments on roles.department_id = departments.id LEFT JOIN employees manager on manager.id = employees.manager_id;'
         );
     };
 
@@ -53,7 +53,7 @@ class DB {
     // update employee
     updateEmployeeRole(employeeId, roleId) {
         return this.connection.promise().query(
-            'UPDATE employee SET role_id = ? WHERE id = ?',
+            'UPDATE employees SET role_id = ? WHERE id = ?',
             [roleId, employeeId]
         );
     };
